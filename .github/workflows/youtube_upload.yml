@@ -31,6 +31,11 @@ jobs:
         python -m pip install --upgrade pip  # Upgrade pip to the latest version
         pip install -r requirements.txt  # Install dependencies from the requirements file
 
+    - name: Install ffmpeg
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg 
+
     # Step 4: Decode Google credentials using GitHub secrets
     - name: Decode and set up Google credentials (YouTube and Drive)
       run: |
