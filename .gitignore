@@ -1,0 +1,23 @@
+# Ignore sensitive files
+credentials.json
+token_youtube.pickle
+token_drive.pickle
+token_drive.pickle.base64
+token_youtube.pickle.base64
+
+# Ignore Python bytecode
+*.pyc
+*.pyo
+__pycache__/
+
+# Ignore environment files
+.env
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore other temporary files
+*.log
+*.bak
+*.swp
