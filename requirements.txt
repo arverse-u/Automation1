@@ -3,6 +3,7 @@ google-auth
 google-auth-oauthlib
 google-auth-httplib2
 google-auth-httplib2
+ffmpeg-python 
 pytesseract
 Pillow
 python-dotenv
