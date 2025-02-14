@@ -36,6 +36,12 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y ffmpeg 
 
+    - name: Install tesseract
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y tesseract-ocr
+      
+
     # Step 4: Decode Google credentials using GitHub secrets
     - name: Decode and set up Google credentials (YouTube and Drive)
       run: |
