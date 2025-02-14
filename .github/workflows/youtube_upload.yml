@@ -1,0 +1,50 @@
+name: Automate YouTube Uploads
+
+# Schedule: Runs at 8 AM, 4 PM, 8 PM IST (converted to UTC)
+on:
+  schedule:
+    # 0 2,10,14 * * * -> 8 AM, 4 PM, 8 PM IST (converted to UTC)
+    - cron: '0 2,10,14 * * *'
+  pull_request:
+    branches:
+      - '*'
+  workflow_dispatch:  # Allows manual triggering from GitHub UI
+
+jobs:
+  upload_video:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner provided by GitHub
+
+    steps:
+    # Step 1: Checkout code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Set up Python 3.x environment
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'  # Use the specific Python version if needed
+
+    # Step 3: Install required dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip  # Upgrade pip to the latest version
+        pip install -r requirements.txt  # Install dependencies from the requirements file
+
+    # Step 4: Decode Google credentials using GitHub secrets
+    - name: Decode and set up Google credentials (YouTube and Drive)
+      run: |
+        # Decode the Base64 encoded credentials and save as .pickle files
+        echo "${{ secrets.GOOGLE_DRIVE_CREDENTIALS }}" | base64 --decode > token_drive.pickle
+        echo "${{ secrets.GOOGLE_YOUTUBE_CREDENTIALS }}" | base64 --decode > token_youtube.pickle
+
+    # Step 5: Set up environment variables from GitHub Secrets
+    - name: Set up environment variables
+      run: |
+        echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> $GITHUB_ENV
+        echo "DRIVE_FOLDER_ID=${{ secrets.DRIVE_FOLDER_ID }}" >> $GITHUB_ENV
+
+    # Step 6: Run the YouTube video upload script
+    - name: Run YouTube upload script
+      run: |
+        python -m src.main  # This will call your main.py to handle the upload process
